@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "strict": true,
+    "baseUrl": ".",
+    "types": ["node", "nuxt"],
+    "paths": {
+      "~/*": ["./*"],
+      "@/*": ["./*"]
+    }
+  },
+  "include": [
+    "types/**/*.d.ts",
+    "pages/**/*.vue",
+    "components/**/*.vue",
+    "composables/**/*.ts",
+    "layouts/**/*.vue",
+    "middleware/**/*.ts"
+  ]
+}
