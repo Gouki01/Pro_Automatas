@@ -1,0 +1,17 @@
+# Dependencies
+[Dd]ependencies/
+[Pp]ackages/
+*.nupkg
+*.nuget.ps1
+
+# Build results
+[Bb]in/
+[Oo]bj/
+
+# Visual Studio specific
+.vs/
+*.user
+*.suo
+
+# User-specific files
+*.DS_Store
