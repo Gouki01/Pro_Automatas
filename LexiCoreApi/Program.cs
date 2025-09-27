@@ -1,7 +1,23 @@
+using Microsoft.EntityFrameworkCore; // Puede que ya esté, si no, agrégala
+// Agrega esta línea:
+using LexiCoreApi.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddControllers();
+
+// --- PEGA EL CÓDIGO DE LA BD AQUÍ ---
+// 1. Obtenemos la cadena de conexión del archivo appsettings.json
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+// 2. Agregamos el servicio de la base de datos (DbContext)
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+// --- FIN DEL CÓDIGO DE LA BD ---
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(); // <-- NUEVO: Habilita el uso de Controladores.
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -16,29 +32,12 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+// El código del WeatherForecast que venía de ejemplo lo podemos ignorar o borrar después.
+// ...
 
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi();
+app.MapControllers(); // <-- NUEVO: Le dice a la app que busque y use los endpoints de los Controladores.
 
 app.Run();
 
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
+// El 'record WeatherForecast' también lo podemos borrar después.
+// ...
